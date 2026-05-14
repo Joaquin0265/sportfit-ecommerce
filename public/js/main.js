@@ -43,7 +43,7 @@ function logout() {
 // --- LÓGICA DE PRODUCTOS Y FILTROS ---
 async function obtenerProductos() {
     try {
-        const respuesta = await fetch('http://localhost:3000/api/productos');
+        const respuesta = await fetch('/api/productos');
         productosLocales = await respuesta.json();
         renderizarProductos(productosLocales);
     } catch (error) {
@@ -93,7 +93,7 @@ function renderizarProductos(lista) {
 // --- CATEGORÍAS MEJORADO ---
 async function cargarBotonesCategorias() {
     try {
-        const res = await fetch('http://localhost:3000/api/admin/categorias');
+        const res = await fetch('/api/admin/categorias');
         const categorias = await res.json();
         const menuLateral = document.getElementById('lista-categorias-menu');
         
@@ -261,7 +261,7 @@ if (btnCheckout) {
         const estructuraOriginal = offcanvasBody.innerHTML;
 
         try {
-            const response = await fetch('http://localhost:3000/api/pedidos/checkout', {
+            const response = await fetch('/api/pedidos/checkout', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',

@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         // 2. Consultar al servidor por este producto específico
-        const res = await fetch(`http://localhost:3000/api/productos/${idProducto}`);
+        const res = await fetch(`/api/productos/${idProducto}`);
         productoActual = await res.json();
 
         if (productoActual) {
@@ -77,7 +77,7 @@ function ajustarCantidadDetalle(cambio) {
 // FUNCIÓN PARA PRODUCTOS RELACIONADOS
 async function cargarRelacionados(idCategoria, idActual) {
     try {
-        const res = await fetch('http://localhost:3000/api/productos');
+        const res = await fetch('/api/productos');
         const todosLosProductos = await res.json();
 
         // Filtramos por categoría y excluimos el producto que ya estamos viendo

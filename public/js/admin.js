@@ -45,7 +45,7 @@ function mostrarSeccion(seccion) {
 async function cargarReportes() {
     try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:3000/api/admin/dashboard-stats', {
+        const res = await fetch('/api/admin/dashboard-stats', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         
@@ -81,7 +81,7 @@ async function cargarReportes() {
 // --- LÓGICA DE PRODUCTOS ---
 async function cargarProductos() {
     try {
-        const res = await fetch('http://localhost:3000/api/productos', {
+        const res = await fetch('/api/productos', {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const productos = await res.json();
@@ -117,7 +117,7 @@ async function cargarProductos() {
 // --- LÓGICA DE PEDIDOS ---
 async function cargarPedidos() {
     try {
-        const res = await fetch('http://localhost:3000/api/admin/pedidos', {
+        const res = await fetch('/api/admin/pedidos', {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const pedidos = await res.json();
@@ -156,7 +156,7 @@ async function cargarPedidos() {
 
 async function cargarCategorias() {
     try {
-        const res = await fetch('http://localhost:3000/api/admin/categorias', {
+        const res = await fetch('/api/admin/categorias', {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const categorias = await res.json();
@@ -190,7 +190,7 @@ async function cargarCategorias() {
 
 async function llenarSelectCategorias() {
     try {
-        const res = await fetch('http://localhost:3000/api/admin/categorias', {
+        const res = await fetch('/api/admin/categorias', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -242,7 +242,7 @@ document.getElementById('form-producto').addEventListener('submit', async (e) =>
 
     const id = document.getElementById('p-id').value;
     const metodo = id ? 'PUT' : 'POST'; 
-    const url = id ? `http://localhost:3000/api/productos/${id}` : 'http://localhost:3000/api/productos';
+    const url = id ? `/api/productos/${id}` : `/api/productos`;
 
     // 🔥 USAMOS FORMDATA EN LUGAR DE JSON
     const formData = new FormData();
@@ -290,7 +290,7 @@ async function eliminarProducto(id) {
     if (!confirm("¿Estás seguro de eliminar este producto? Esta acción no se puede deshacer.")) return;
 
     try {
-        const res = await fetch(`http://localhost:3000/api/productos/${id}`, {
+        const res = await fetch(`/api/productos/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -315,7 +315,7 @@ async function eliminarCategoria(id) {
     if (!confirm("¿Deseas eliminar esta categoría? Si tiene productos asociados, podrían quedar sin categoría.")) return;
 
     try {
-        const res = await fetch(`http://localhost:3000/api/admin/categorias/${id}`, {
+        const res = await fetch(`/api/admin/categorias/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -340,7 +340,7 @@ async function eliminarPedido(id) {
     if (!confirm("¿Eliminar registro de pedido # " + id + "?")) return;
 
     try {
-        const res = await fetch(`http://localhost:3000/api/admin/pedidos/${id}`, {
+        const res = await fetch(`/api/admin/pedidos/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -360,7 +360,7 @@ async function eliminarPedido(id) {
 
 async function verProducto(id) {
     try {
-        const res = await fetch(`http://localhost:3000/api/productos/${id}`, {
+        const res = await fetch(`/api/productos/${id}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const p = await res.json();
@@ -386,7 +386,7 @@ async function verProducto(id) {
 
 async function prepararEdicion(id) {
     try {
-        const res = await fetch(`http://localhost:3000/api/productos/${id}`, {
+        const res = await fetch(`/api/productos/${id}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const p = await res.json();
@@ -427,7 +427,7 @@ function establecerEstadoFormulario(soloLectura) {
 }
 
 const modalCategoriaBS = new bootstrap.Modal(document.getElementById('modalCategoria'));
-const URL_ADMIN_CAT = 'http://localhost:3000/api/admin/categorias';
+const URL_ADMIN_CAT = '/api/admin/categorias';
 
 async function verCategoria(id) {
     try {
@@ -510,7 +510,7 @@ document.getElementById('form-categoria').addEventListener('submit', async (e) =
 });
 
 const modalPedidoBS = new bootstrap.Modal(document.getElementById('modalPedido'));
-const URL_PEDIDOS = 'http://localhost:3000/api/admin/pedidos';
+const URL_PEDIDOS = '/api/admin/pedidos';
 
 async function verPedido(id) {
     try {
@@ -580,14 +580,14 @@ let productosSeleccionados = [];
 async function cargarSelectsPedido() {
     try {
         const token = localStorage.getItem('token');
-        const resCli = await fetch('http://localhost:3000/api/admin/usuarios', {
+        const resCli = await fetch('/api/admin/usuarios', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const usuarios = await resCli.json();
         const selCli = document.getElementById('ped-cliente');
         selCli.innerHTML = usuarios.map(u => `<option value="${u.id_usuario}">${u.nombre}</option>`).join('');
 
-        const resProd = await fetch('http://localhost:3000/api/productos', {
+        const resProd = await fetch('/api/productos', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const productos = await resProd.json();
@@ -669,7 +669,7 @@ document.getElementById('form-pedido').addEventListener('submit', async (e) => {
     const id_pedido = document.getElementById('ped-id').value;
     const token = localStorage.getItem('token');
 
-    let url = 'http://localhost:3000/api/admin/pedidos';
+    let url = '/api/admin/pedidos';
     let metodo = 'POST';
     let body = {};
 
