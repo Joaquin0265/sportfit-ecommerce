@@ -14,8 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // --- FUNCIONES DE NAVEGACIÓN ---
+// --- FUNCIONES DE NAVEGACIÓN ---
 function mostrarSeccion(seccion) {
-    const secciones = ['productos', 'categorias', 'pedidos'];
+    // 1. Agregamos 'reportes' al array para que la función sepa que existe
+    const secciones = ['productos', 'categorias', 'pedidos', 'reportes'];
+    
     secciones.forEach(s => {
         const el = document.getElementById(`seccion-${s}`);
         if (el) el.style.display = 'none';
@@ -24,9 +27,11 @@ function mostrarSeccion(seccion) {
     const seccionActiva = document.getElementById(`seccion-${seccion}`);
     if (seccionActiva) seccionActiva.style.display = 'block';
 
+    // 2. Disparamos la carga de datos según la sección
     if (seccion === 'categorias') cargarCategorias();
     if (seccion === 'productos') cargarProductos();
     if (seccion === 'pedidos') cargarPedidos();
+    if (seccion === 'reportes') cargarReportes(); // 🔥 NUEVO
 
     document.querySelectorAll('.sidebar .nav-link').forEach(link => {
         link.classList.remove('active');
@@ -34,6 +39,43 @@ function mostrarSeccion(seccion) {
             link.classList.add('active');
         }
     });
+}
+
+// 🔥 NUEVA FUNCIÓN PARA LOS REPORTES
+async function cargarReportes() {
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch('http://localhost:3000/api/admin/dashboard-stats', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        const data = await res.json();
+
+        // 1. Actualizar tarjetas
+        document.getElementById('metrica-pedidos').innerText = data.totalPedidos;
+        document.getElementById('metrica-ingresos').innerText = `S/ ${data.ingresosTotales.toFixed(2)}`;
+        document.getElementById('metrica-alertas').innerText = data.productosBajoStock.length;
+
+        // 2. Llenar tabla de stock crítico
+        const tabla = document.getElementById('tabla-stock-critico');
+        tabla.innerHTML = data.productosBajoStock.map(p => `
+            <tr>
+                <td class="fw-bold">${p.nombre}</td>
+                <td><span class="badge bg-danger">${p.stock} unidades</span></td>
+                <td>${p.categoria}</td>
+                <td>
+                    <button class="btn btn-sm btn-dark" onclick="prepararEdicion(${p.id_producto})">Abastecer</button>
+                </td>
+            </tr>
+        `).join('');
+
+        if(data.productosBajoStock.length === 0) {
+            tabla.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Todo el inventario está al día.</td></tr>';
+        }
+
+    } catch (error) {
+        console.error("Error cargando reportes:", error);
+    }
 }
 
 // --- LÓGICA DE PRODUCTOS ---

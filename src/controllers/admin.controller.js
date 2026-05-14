@@ -175,7 +175,41 @@ obtenerPedidos: async (req, res) => {
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
+    },
+
+    obtenerDashboardStats: async (req, res) => {
+        try {
+            // 1. Calcular el Total de Pedidos Pagados
+            const [pedidosRows] = await pool.query('SELECT COUNT(*) as total FROM Pedidos WHERE estado = "Pagado"');
+            const totalPedidos = pedidosRows[0].total || 0;
+
+            // 2. Calcular los Ingresos Totales (Sumar el total de los pedidos pagados)
+            const [ingresosRows] = await pool.query('SELECT SUM(total) as ingresos FROM Pedidos WHERE estado = "Pagado"');
+            const ingresosTotales = ingresosRows[0].ingresos || 0;
+
+            // 3. Buscar Productos en Riesgo (Stock menor o igual a 5)
+            // Hacemos un JOIN rápido con Categorías para que la tabla muestre el nombre de la categoría
+            const queryStock = `
+                SELECT p.id_producto, p.nombre, p.stock, c.nombre as categoria 
+                FROM Productos p 
+                LEFT JOIN Categorias c ON p.id_categoria = c.id_categoria 
+                WHERE p.stock <= 5
+            `;
+            const [productosBajoStock] = await pool.query(queryStock);
+
+            // 4. Enviar el paquete de datos al frontend
+            res.json({
+                totalPedidos: totalPedidos,
+                ingresosTotales: parseFloat(ingresosTotales), // Lo pasamos a float por si MariaDB lo devuelve como string
+                productosBajoStock: productosBajoStock
+            });
+
+        } catch (error) {
+            console.error("Error al obtener estadísticas del dashboard:", error);
+            res.status(500).json({ error: "Error interno al cargar las métricas" });
+        }
     }
 };
+
 
 module.exports = adminController;

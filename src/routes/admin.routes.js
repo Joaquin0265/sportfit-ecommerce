@@ -15,6 +15,9 @@ router.put('/categorias/:id', verificarToken, esAdmin, adminController.actualiza
 router.delete('/categorias/:id', verificarToken, esAdmin, adminController.eliminarCategoria);
 
 // --- REPORTES Y USUARIOS (Protegidos) ---
+// 🔥 AQUÍ AGREGAMOS LA NUEVA RUTA PARA QUE EL DASHBOARD NO SALGA EN CERO
+router.get('/dashboard-stats', verificarToken, esAdmin, adminController.obtenerDashboardStats);
+
 router.get('/reportes', verificarToken, esAdmin, adminController.obtenerResumenVentas);
 router.get('/usuarios', verificarToken, esAdmin, adminController.listarUsuarios);
 router.put('/promociones', verificarToken, esAdmin, adminController.aplicarDescuentoCategoria);
