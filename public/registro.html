@@ -128,8 +128,7 @@
             };
 
             try {
-                // He añadido el host completo http://localhost:3000 para evitar errores de CORS en local
-                const res = await fetch('http://localhost:3000/api/auth/registro', {
+                const res = await fetch('/api/auth/registro', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(usuarioData)
