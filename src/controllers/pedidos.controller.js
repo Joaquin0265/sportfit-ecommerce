@@ -141,6 +141,7 @@ const pedidosController = {
             console.error("Error al listar pedidos:", error);
             res.status(500).json({ error: "No se pudieron recuperar los pedidos." });
         }
+<<<<<<< HEAD
     },
 
     // Añade esto dentro del objeto pedidosController en pedidos.controller.js
@@ -181,6 +182,9 @@ const pedidosController = {
             res.status(500).json({ error: "No se pudo cargar el historial de compras." });
         }
     },
+=======
+    }
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
 };
 
 module.exports = pedidosController;

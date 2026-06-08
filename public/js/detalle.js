@@ -13,7 +13,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         // 2. Consultar al servidor por este producto específico
+<<<<<<< HEAD
         const res = await fetch('/api/productos/' + idProducto);
+=======
+        const res = await fetch(`/api/productos/${idProducto}`);
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
         productoActual = await res.json();
 
         if (productoActual) {
@@ -21,18 +25,33 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('det-img').src = productoActual.imagen_url;
             document.getElementById('det-nombre').innerText = productoActual.nombre;
             document.getElementById('bread-nombre').innerText = productoActual.nombre;
+<<<<<<< HEAD
             document.getElementById('det-precio').innerText = 'S/ ' + productoActual.precio;
             document.getElementById('det-desc').innerText = productoActual.descripcion;
             document.getElementById('det-id').innerText = 'Código: ' + productoActual.id_producto;
+=======
+            document.getElementById('det-precio').innerText = `S/ ${productoActual.precio}`;
+            document.getElementById('det-desc').innerText = productoActual.descripcion;
+            document.getElementById('det-id').innerText = `Código: ${productoActual.id_producto}`;
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
 
             // 4. Configurar botón de agregar
             const btn = document.getElementById('det-btn');
             if (productoActual.stock <= 0) {
                 btn.disabled = true;
                 btn.innerText = "AGOTADO";
+<<<<<<< HEAD
                 document.querySelector('.selector-cantidad').parentElement.style.display = 'none';
             } else {
                 btn.onclick = () => {
+=======
+                // Ocultar selector de cantidad si no hay stock
+                document.querySelector('.selector-cantidad').parentElement.style.display = 'none';
+            } else {
+                btn.onclick = () => {
+                    // Agregamos la cantidad seleccionada al carrito
+                    // Llamamos a la función de main.js repetidas veces según la cantidad
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
                     for(let i = 0; i < cantidadSeleccionada; i++) {
                         agregarAlCarrito(
                             productoActual.id_producto, 
@@ -41,12 +60,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                             productoActual.imagen_url
                         );
                     }
+<<<<<<< HEAD
+=======
+                    
+                    // Abrir el carrito automáticamente para que el usuario vea el cambio
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
                     const offcanvasCarrito = document.getElementById('menuCarrito');
                     const bsOffcanvas = new bootstrap.Offcanvas(offcanvasCarrito);
                     bsOffcanvas.show();
                 };
             }
 
+<<<<<<< HEAD
+=======
+            // 5. Cargar productos de la misma categoría (Relacionados)
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
             cargarRelacionados(productoActual.id_categoria, productoActual.id_producto);
         }
     } catch (error) {
@@ -54,23 +82,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+<<<<<<< HEAD
+=======
+// FUNCIÓN PARA EL PANEL DE CANTIDAD
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
 function ajustarCantidadDetalle(cambio) {
     cantidadSeleccionada += cambio;
     if (cantidadSeleccionada < 1) {
         cantidadSeleccionada = 1;
     }
+<<<<<<< HEAD
     if (productoActual && cantidadSeleccionada > productoActual.stock) {
         cantidadSeleccionada = productoActual.stock;
         alert('Lo sentimos, solo quedan ' + productoActual.stock + ' unidades disponibles.');
+=======
+    // Validar contra el stock real
+    if (productoActual && cantidadSeleccionada > productoActual.stock) {
+        cantidadSeleccionada = productoActual.stock;
+        alert(`Lo sentimos, solo quedan ${productoActual.stock} unidades disponibles.`);
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
     }
     document.getElementById('cant-detalle').innerText = cantidadSeleccionada;
 }
 
+<<<<<<< HEAD
+=======
+// FUNCIÓN PARA PRODUCTOS RELACIONADOS
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
 async function cargarRelacionados(idCategoria, idActual) {
     try {
         const res = await fetch('/api/productos');
         const todosLosProductos = await res.json();
 
+<<<<<<< HEAD
+=======
+        // Filtramos por categoría y excluimos el producto que ya estamos viendo
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
         const relacionados = todosLosProductos.filter(p => 
             p.id_categoria == idCategoria && p.id_producto != idActual
         );
@@ -78,11 +125,17 @@ async function cargarRelacionados(idCategoria, idActual) {
         const contenedor = document.getElementById('productos-relacionados');
         if (!contenedor) return;
 
+<<<<<<< HEAD
+=======
+        contenedor.innerHTML = '';
+
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
         if (relacionados.length === 0) {
             contenedor.innerHTML = '<p class="text-muted small ps-3">No hay productos similares por ahora.</p>';
             return;
         }
 
+<<<<<<< HEAD
         contenedor.innerHTML = relacionados.slice(0, 4).map(p => `
             <div class="col-6 col-md-3">
                 <div class="card h-100 border-0 shadow-sm card-relacionado">
@@ -97,10 +150,28 @@ async function cargarRelacionados(idCategoria, idActual) {
                 </div>
             </div>`
         ).join('');
+=======
+        // Mostramos máximo los primeros 4 relacionados
+        relacionados.slice(0, 4).forEach(p => {
+            contenedor.innerHTML += `
+                <div class="col-6 col-md-3">
+                    <div class="card h-100 border-0 shadow-sm card-relacionado">
+                        <a href="detalle.html?id=${p.id_producto}" class="text-decoration-none">
+                            <div class="p-3 text-center">
+                                <img src="${p.imagen_url}" class="img-fluid mb-2" style="height: 120px; object-fit: contain;" onerror="this.src='img/placeholder.jpg'">
+                                <h6 class="text-dark small fw-bold text-truncate">${p.nombre}</h6>
+                                <p class="text-primary fw-bold mb-0">S/ ${p.precio}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>`;
+        });
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
 
     } catch (error) {
         console.error("Error cargando relacionados:", error);
     }
+<<<<<<< HEAD
 }
 
 // ==========================================
@@ -377,3 +448,6 @@ async function compartirResena(idResena) {
 }
 
 renderizarComentarios();
+=======
+}
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44

@@ -27,9 +27,12 @@ function verificarSesion() {
 
         contenedor.innerHTML = `
             ${htmlAdmin}
+<<<<<<< HEAD
             <button class="btn btn-outline-light btn-sm me-3" onclick="abrirMisPedidos()">
                 <i class="bi bi-clock-history"></i> Mis Pedidos
             </button>
+=======
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
             <span class="text-white me-3 small d-none d-md-inline">Hola, <strong>${nombre ? nombre.split(' ')[0] : 'Usuario'}</strong></span>
             <button onclick="logout()" class="btn btn-outline-danger btn-sm">Salir</button>
         `;
@@ -43,6 +46,7 @@ function logout() {
     window.location.href = 'index.html';
 }
 
+<<<<<<< HEAD
 // --- HISTORIAL DE COMPRAS REAL ---
 async function abrirMisPedidos() {
     const contenedorPedidos = document.getElementById('lista-mis-pedidos');
@@ -109,6 +113,8 @@ async function abrirMisPedidos() {
     }
 }
 
+=======
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
 // --- LÓGICA DE PRODUCTOS Y FILTROS ---
 async function obtenerProductos() {
     try {
@@ -124,23 +130,39 @@ function renderizarProductos(lista) {
     const contenedor = document.getElementById('lista-productos');
     if (!contenedor) return; 
 
+<<<<<<< HEAD
+=======
+    contenedor.innerHTML = ''; 
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
     if (lista.length === 0) {
         contenedor.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron productos.</p></div>';
         return;
     }
 
+<<<<<<< HEAD
     // Mapeamos el array completo y lo inyectamos en un solo impacto limpio al DOM
     contenedor.innerHTML = lista.map(producto => {
         const stockClase = producto.stock <= 5 ? 'stock-bajo' : 'stock-ok';
         const stockTexto = producto.stock <= 0 ? 'Agotado' : `Stock: ${producto.stock}`;
 
         return `
+=======
+    lista.forEach(producto => {
+        const stockClase = producto.stock <= 5 ? 'stock-bajo' : 'stock-ok';
+        const stockTexto = producto.stock <= 0 ? 'Agotado' : `Stock: ${producto.stock}`;
+
+        contenedor.innerHTML += `
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
             <div class="col-6 col-md-4 col-lg-3 mb-4">
                 <div class="card h-100 shadow-sm card-producto border-0">
                     
                     <div class="contenedor-img-producto position-relative">
                         <img src="${producto.imagen_url}" class="img-producto-ajustada" alt="${producto.nombre}" 
+<<<<<<< HEAD
                              onerror="this.onerror=null; this.src='https://placehold.co/300x300?text=SportFit';">
+=======
+                             onerror="this.src='img/placeholder.jpg'">
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
                         <span class="stock-badge ${stockClase}">${stockTexto}</span>
                     </div>
                     
@@ -156,7 +178,11 @@ function renderizarProductos(lista) {
                     </div>
                 </div>
             </div>`;
+<<<<<<< HEAD
     }).join(''); 
+=======
+    });
+>>>>>>> 404a015820dc9690f87fcd68651f120c47f25a44
 }
 
 // --- CATEGORÍAS MEJORADO ---
